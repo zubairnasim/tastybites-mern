@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Zolina';
+  src: url('./assets/fonts/Zolina-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zolina';
+  src: url('./assets/fonts/Zolina-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zolina';
+  src: url('./assets/fonts/Zolina-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zolina';
+  src: url('./assets/fonts/Zolina-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zolina';
+  src: url('./assets/fonts/Zolina-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zolina';
+  src: url('./assets/fonts/Zolina-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'Zolina', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: 'Zolina', sans-serif;
+  background: #facc15;
+  color: #000;
+}
+
+@keyframes feature-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-feature-scroll {
+  animation: feature-scroll 10s linear infinite;
+  will-change: transform;
+}

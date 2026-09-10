@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const User = require('../models/user')
 const MenuItem = require('../models/MenuItem')
 
 const getDashboardStats = async (req, res) => {

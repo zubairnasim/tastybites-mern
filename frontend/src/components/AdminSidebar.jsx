@@ -24,6 +24,11 @@ function AdminSidebar() {
       name: 'Users',
       path: '/admin/users',
       icon: 'ri-group-line'
+    },
+    {
+      name: 'Orders',
+      path: '/admin/orders',
+      icon: 'ri-shopping-bag-3-line'
     }
   ]
 
@@ -43,7 +48,6 @@ function AdminSidebar() {
         <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mt-2">
           Admin Panel
         </p>
-
 
         {/* Navigation */}
         <nav className="mt-10 flex lg:flex-col gap-2 overflow-x-auto">
@@ -66,7 +70,6 @@ function AdminSidebar() {
           ))}
 
         </nav>
-
 
         {/* Bottom */}
         <div className="mt-10 lg:mt-16 pt-6 border-t border-white/20">

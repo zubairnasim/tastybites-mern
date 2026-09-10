@@ -13,6 +13,7 @@ import AddMenuItem from './pages/admin/AddMenuItem'
 import EditMenuItem from './pages/admin/EditMenuItem'
 import Users from './pages/admin/Users'
 import NotFound from './pages/NotFound'
+import Orders from './pages/admin/Orders'
 
 function App() {
   return (
@@ -79,6 +80,17 @@ function App() {
     <ProtectedRoute adminOnly>
       <AdminLayout>
         <Users />
+      </AdminLayout>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/orders"
+  element={
+    <ProtectedRoute adminOnly>
+      <AdminLayout>
+        <Orders />
       </AdminLayout>
     </ProtectedRoute>
   }

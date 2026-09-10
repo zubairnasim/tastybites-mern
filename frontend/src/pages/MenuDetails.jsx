@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import api from '../services/api'
+import { useAuth } from '../context/AuthContext'
 
 function MenuDetails() {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { user, token } = useAuth()
 
   const [menuItem, setMenuItem] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [ordering, setOrdering] = useState(false)
 
   useEffect(() => {
     const fetchMenuItem = async () => {
@@ -34,21 +38,62 @@ function MenuDetails() {
     fetchMenuItem()
   }, [id])
 
+  const handleOrder = async () => {
+    
+    
+    if (!user || !token) {
+      navigate('/login')
+      return
+    }
+
+    if (!menuItem.availability) {
+      return
+    }
+
+    try {
+      setOrdering(true)
+
+      await api.post(
+        '/orders',
+        {
+          items: [
+            {
+              menuItem: menuItem._id,
+              quantity: 1
+            }
+          ]
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      alert('Order placed successfully!')
+    } catch (error) {
+      console.error('Failed to place order:', error)
+
+      alert(
+        error.response?.data?.message ||
+        'Unable to place order.'
+      )
+    } finally {
+      setOrdering(false)
+    }
+  }
+
   /* Loading */
   if (loading) {
     return (
       <main className="min-h-screen bg-yellow-300 flex items-center justify-center">
-
         <div className="text-center">
-
           <div className="inline-block w-10 h-10 border-4 border-black border-t-transparent rounded-full animate-spin" />
 
           <p className="mt-4 text-sm uppercase font-bold">
             Loading...
           </p>
-
         </div>
-
       </main>
     )
   }
@@ -57,7 +102,6 @@ function MenuDetails() {
   if (error) {
     return (
       <main className="min-h-screen bg-yellow-300 flex items-center justify-center px-6">
-
         <div className="text-center">
 
           <h1 className="text-4xl sm:text-5xl font-black uppercase">
@@ -89,7 +133,6 @@ function MenuDetails() {
           </Link>
 
         </div>
-
       </main>
     )
   }
@@ -97,9 +140,7 @@ function MenuDetails() {
   return (
     <main className="min-h-screen bg-yellow-300 text-black">
 
-      {/* =========================
-          TOP NAVIGATION
-      ========================== */}
+      {/* Top Navigation */}
       <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-8">
 
         <Link
@@ -120,10 +161,7 @@ function MenuDetails() {
 
       </div>
 
-
-      {/* =========================
-          DETAILS
-      ========================== */}
+      {/* Details */}
       <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -170,7 +208,6 @@ function MenuDetails() {
 
           </div>
 
-
           {/* Information */}
           <div>
 
@@ -192,7 +229,6 @@ function MenuDetails() {
               {menuItem.category}
             </span>
 
-
             {/* Name */}
             <h1
               className="
@@ -208,7 +244,6 @@ function MenuDetails() {
             >
               {menuItem.name}
             </h1>
-
 
             {/* Price + Availability */}
             <div className="flex items-center gap-6 mt-8">
@@ -236,40 +271,77 @@ function MenuDetails() {
 
             </div>
 
-
             {/* Description */}
             <p className="mt-8 max-w-xl text-base sm:text-lg leading-relaxed">
               {menuItem.description}
             </p>
 
-
             {/* CTA */}
-            <Link
-              to="/"
-              className="
-                inline-flex
-                items-center
-                gap-3
-                mt-10
-                bg-black
-                text-yellow-300
-                px-7
-                py-3.5
-                rounded-full
-                text-sm
-                uppercase
-                font-bold
-                hover:bg-white
-                hover:text-black
-                transition-all
-                duration-300
-              "
-            >
-              Explore More
-              <span className="text-lg">
-                ↗
-              </span>
-            </Link>
+            <div className="flex flex-wrap gap-4 mt-10">
+
+              <button
+                onClick={handleOrder}
+                disabled={ordering || !menuItem.availability}
+                className="
+                  inline-flex
+                  items-center
+                  gap-3
+                  bg-black
+                  text-yellow-300
+                  px-7
+                  py-3.5
+                  rounded-full
+                  text-sm
+                  uppercase
+                  font-bold
+                  hover:bg-white
+                  hover:text-black
+                  transition-all
+                  duration-300
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
+                "
+              >
+                {ordering
+                  ? 'Placing Order...'
+                  : menuItem.availability
+                    ? 'Order Now'
+                    : 'Out of Stock'}
+
+                {!ordering && menuItem.availability && (
+                  <span className="text-lg">
+                    →
+                  </span>
+                )}
+              </button>
+
+              <Link
+                to="/"
+                className="
+                  inline-flex
+                  items-center
+                  gap-3
+                  border-2
+                  border-black
+                  px-7
+                  py-3
+                  rounded-full
+                  text-sm
+                  uppercase
+                  font-bold
+                  hover:bg-black
+                  hover:text-yellow-300
+                  transition-all
+                  duration-300
+                "
+              >
+                Explore More
+                <span className="text-lg">
+                  ↗
+                </span>
+              </Link>
+
+            </div>
 
           </div>
 

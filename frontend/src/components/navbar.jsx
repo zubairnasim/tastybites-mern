@@ -99,6 +99,13 @@ function Navbar() {
                 </Link>
 
                 <Link
+                  to="/admin/login"
+                  className="text-sm font-bold uppercase hover:opacity-60 transition"
+                >
+                  Admin Login
+                </Link>
+
+                <Link
                   to="/register"
                   className="bg-black text-yellow-300 px-4 py-2 rounded-full text-sm font-bold uppercase hover:bg-white hover:text-black transition"
                 >
@@ -200,6 +207,14 @@ function Navbar() {
                     className="text-sm uppercase font-bold"
                   >
                     Login
+                  </Link>
+
+                  <Link
+                    to="/admin/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-sm uppercase font-bold text-yellow-300"
+                  >
+                    Admin Login
                   </Link>
 
                   <Link

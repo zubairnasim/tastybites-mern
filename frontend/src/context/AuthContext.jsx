@@ -4,6 +4,7 @@ const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
   // Restore login after page refresh
@@ -13,17 +14,19 @@ export function AuthProvider({ children }) {
 
     if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser))
+      setToken(storedToken)
     }
 
     setLoading(false)
   }, [])
 
   // Save user + token
-  const login = (userData, token) => {
+  const login = (userData, authToken) => {
     localStorage.setItem('tastybites_user', JSON.stringify(userData))
-    localStorage.setItem('tastybites_token', token)
+    localStorage.setItem('tastybites_token', authToken)
 
     setUser(userData)
+    setToken(authToken)
   }
 
   // Remove user + token
@@ -32,16 +35,18 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('tastybites_token')
 
     setUser(null)
+    setToken(null)
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        token,
         login,
         logout,
         loading,
-        isAuthenticated: !!user
+        isAuthenticated: !!user && !!token
       }}
     >
       {children}
